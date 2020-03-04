@@ -2,12 +2,13 @@ package com.example.flashcard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -17,41 +18,6 @@ import java.util.List;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
-    /*private void createRadioButton(int RadioButtonCount) {
-        final RadioButton[] rb = new RadioButton[RadioButtonCount];
-        RadioGroup answersRadioGroup = findViewById(R.id.answersRadioGroup);
-        answersRadioGroup.setOrientation(RadioGroup.VERTICAL);
-        for(int i=0; i<5; i++){
-            rb[i]  = new RadioButton(this);
-            rb[i].setText("Test " + i);
-            rb[i].setId(i + 100);
-            answersRadioGroup.addView(rb[i]);
-        }
-        LinearLayout.addView(answersRadioGroup);
-    }*/
-
-    private void createRadioButton(int RadioButtonCount) {
-        final RadioButton[] rb = new RadioButton[RadioButtonCount];
-        RadioGroup answersRadioGroup = findViewById(R.id.answersRadioGroup);
-        answersRadioGroup.setOrientation(RadioGroup.VERTICAL);
-        for(int i=0; i<5; i++){
-            rb[i]  = new RadioButton(this);
-            answersRadioGroup.addView(rb[i]); //the RadioButtons are added to the radioGroup instead of the layout
-            rb[i].setText("Test" + i);
-        }
-        LinearLayout.addView(answersRadioGroup);//you add the whole RadioGroup to the layout
-        ll.addView(submit);
-        submit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                for(int i = 0; i < 5; i++) {
-                    rg.removeView(rb[i]);//now the RadioButtons are in the RadioGroup
-                }
-                ll.removeView(submit);
-                Questions();
-            }
-        });
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +27,8 @@ public class GameActivity extends AppCompatActivity {
         final RadioGroup answersRadioGroup = findViewById(R.id.answersRadioGroup);
         final TextView validateAnswerTextView = findViewById(R.id.validateAnswerTextView);
         final Button validateButton = findViewById(R.id.validateButton);
+        final ImageView gameImageView = findViewById(R.id.gameImageView);
+        final int gameImageId = R.drawable.csgo_logo;
         final String goodAnswer = "CS:GO";
         //endregion
 
@@ -69,6 +37,8 @@ public class GameActivity extends AppCompatActivity {
         list.add("CS:GO");
         list.add("Overwatch");
         list.add("Crysis");
+
+        gameImageView.setImageResource(gameImageId);
 
         // getChildCount get the number of RadioButtons within the RadioGroup.
         int radioButtonsCount = answersRadioGroup.getChildCount();
@@ -94,16 +64,33 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int selectedId = answersRadioGroup.getCheckedRadioButtonId();
-                RadioButton selectedRadioButton = findViewById(selectedId);
 
-                if (selectedRadioButton.getText().equals(goodAnswer)) {
-                    validateAnswerTextView.setText("Bonne réponse !");
-                    validateAnswerTextView.setTextColor(Color.GREEN);
+                if(selectedId != -1){
+                    RadioButton selectedRadioButton = findViewById(selectedId);
+
+                    if (selectedRadioButton.getText().equals(goodAnswer)) {
+                        validateAnswerTextView.setText("Bonne réponse !");
+                        validateAnswerTextView.setTextColor(Color.GREEN);
+                    }
+                    else{
+                        validateAnswerTextView.setText("Mauvaise réponse...\nLa bonne réponse était : " + goodAnswer);
+                        validateAnswerTextView.setTextColor(Color.RED);
+                    }
                 }
                 else{
-                    validateAnswerTextView.setText("Mauvaise réponse...\nLa bonne réponse était : " + goodAnswer);
+                    validateAnswerTextView.setText("Veuillez sélectionner une réponse !");
                     validateAnswerTextView.setTextColor(Color.RED);
                 }
+            }
+        });
+
+        gameImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Redirect to another activity showing the full-sized image.
+                Intent intent = new Intent(GameActivity.this, BigSizeImageActivity.class);
+                intent.putExtra("drawable", gameImageId);
+                startActivity(intent);
             }
         });
     }

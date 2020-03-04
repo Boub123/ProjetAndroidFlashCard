@@ -33,7 +33,6 @@ public class GameActivity extends AppCompatActivity {
     List<String> list = new ArrayList<String>();
 
 
-
     String goodAnswer = "conterstrike";
     String test = "Valider la réponse";
 
@@ -64,7 +63,7 @@ public class GameActivity extends AppCompatActivity {
         thumb1View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final ImageView image = (ImageView)findViewById(R.id.imageButton);
+                final ImageView image = (ImageView) findViewById(R.id.imageButton);
                 image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -81,13 +80,13 @@ public class GameActivity extends AppCompatActivity {
         RadioButton radiobutton1 = findViewById(R.id.firstRadioButton);
         radiobutton1.setText("over");
 
-         int b = (int) (Math.random() * 3);
+        int b = (int) (Math.random() * 3);
 
 
         RadioButton radiobutton2 = findViewById(R.id.secondRadioButton);
         radiobutton2.setText("conterstrike");
 
-         int c = (int) (Math.random() * 3);
+        int c = (int) (Math.random() * 3);
 
 
         RadioButton radiobutton3 = findViewById(R.id.thirdRadioButton);
@@ -103,19 +102,17 @@ public class GameActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Log.i("mes",buttonValidate.getText().toString());
+                Log.i("mes", buttonValidate.getText().toString());
 
-                if(buttonValidate.getText().equals(test))
-                {
-                    Log.i("mes","messagefzfzefr");
+                if (buttonValidate.getText().equals(test)){
+                    Log.i("mes", "messagefzfzefr");
                     int radioId = radioGroup.getCheckedRadioButtonId();
 
                     radioButton = findViewById(radioId);
 
                     textViewResult.setText("your choice : " + radioButton.getText());
 
-                    if(radioButton.getText().equals(goodAnswer))
-                    {
+                    if (radioButton.getText().equals(goodAnswer)) {
                         textViewResult.setText("Bonne réponse " + goodAnswer);
                         textViewAnswer.setText("");
 
@@ -125,8 +122,7 @@ public class GameActivity extends AppCompatActivity {
 
                         buttonValidate.setText("Prochaine question");
 
-                    }
-                    else{
+                    } else {
                         textViewResult.setText("Mauvaise réponse ");
                         textViewAnswer.setText("La bonne réponsé était " + goodAnswer);
 
@@ -134,8 +130,7 @@ public class GameActivity extends AppCompatActivity {
 
                         buttonValidate.setText("Prochaine question");
                     }
-                }
-                else if(buttonValidate.getText() == "Prochaine question"){
+                } else if (buttonValidate.getText() == "Prochaine question") {
                     Intent intent = new Intent(GameActivity.this, GameActivity.class);
                     startActivity(intent);
                 }

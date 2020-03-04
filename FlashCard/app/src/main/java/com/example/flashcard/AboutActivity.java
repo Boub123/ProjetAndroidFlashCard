@@ -12,9 +12,10 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        //int versionCode = BuildConfig.VERSION_CODE;
+        // Get current build version.
         String versionName = BuildConfig.VERSION_NAME;
 
+        // Show current build version (dynamically).
         TextView appVersionTextView = findViewById(R.id.appVersionTextView);
         appVersionTextView.setText(versionName);
     }

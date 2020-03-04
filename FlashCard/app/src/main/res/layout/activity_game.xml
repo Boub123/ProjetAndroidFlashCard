@@ -52,7 +52,7 @@
         tools:text="RadioButton" />
 
     <RadioButton
-        android:id="@+id/radioThirdButton3"
+        android:id="@+id/k"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -63,7 +63,7 @@
         tools:text="RadioButton" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonValidate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -71,5 +71,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioThirdButton3" />
+        app:layout_constraintTop_toBottomOf="@+id/k" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,6 +32,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //region Supplying items to lists.
         imageList.add(R.drawable.csgo_logo);
@@ -55,6 +56,9 @@ public class GameActivity extends AppCompatActivity {
         final int radioButtonsCount = answersRadioGroup.getChildCount(); // getChildCount get the number of RadioButtons within the RadioGroup.
         final int maxQuestion = answerList.size();
         //endregion
+
+        // Set title of the current activity with the current question number and the amount of remaining questions.
+        setTitle("GameCard - " + currentQuestion + " / " + maxQuestion);
 
         // Select a random picture to load when launching a new game then remove it from the list.
         Random randImage = new Random();
@@ -126,7 +130,7 @@ public class GameActivity extends AppCompatActivity {
             answerList.add(value);
         }
 
-        // Clear the whole temporary list.
+        // Then clear the whole temporary list.
         tempList.clear();
 
         // Action on validate button.
@@ -158,6 +162,11 @@ public class GameActivity extends AppCompatActivity {
                         else{
                             validateButton.setText("Voir les résultats");
                         }
+
+                        // Disable RadioButtons once the answer has been submit.
+                        for(int i = 0; i < radioButtonsCount; i++){
+                            answersRadioGroup.getChildAt(i).setEnabled(false);
+                        }
                     }
                     else{
                         // If none of the RadioButtons is checked.
@@ -167,37 +176,20 @@ public class GameActivity extends AppCompatActivity {
                 }
                 // When the button has been switched to "Next question".
                 else if (validateButton.getText().equals("Question suivante")) {
-                    /*// Load a new picture with new answers.
-                    gameImageId = R.drawable.ark_logo;
-                    gameImageView.setImageResource(gameImageId);
-                    goodAnswer = "Ark";
-                    answersRadioGroup.clearCheck();
+                    currentQuestion++;
+                    setTitle("GameCard - " + currentQuestion + " / " + maxQuestion);
 
-                    List<String> list;
-                    list = new ArrayList<>();
-                    list.add(goodAnswer);
-                    list.add("Overwatch");
-                    list.add("Crysis");
-
-                    for(int i = 0; i < radioButtonsCount; i++){
-                        // Get a random integer within the range 0 to list.size - 1.
-                        Random rand = new Random();
-                        int n = rand.nextInt(list.size());
-
-                        // Get the ID of the current iterated RadioButton.
-                        int radioButtonId = answersRadioGroup.getChildAt(i).getId();
-                        RadioButton myRadioButton = findViewById(radioButtonId);
-
-                        // Randomly picks an item from the list and set it as text to the current iterated RadioButton.
-                        // Then removes this item from the list to avoid to set it twice as text.
-                        myRadioButton.setText(list.get(n));
-                        list.remove(n);
-                    }*/
-
+                    // Reset AnswerTextView and validateButton texts.
                     validateAnswerTextView.setText("");
                     validateButton.setText("Valider la réponse");
 
-                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    // Clear and enable RadioButtons once the "Next question" button has been pressed.
+                    answersRadioGroup.clearCheck();
+                    for(int i = 0; i < radioButtonsCount; i++){
+                        answersRadioGroup.getChildAt(i).setEnabled(true);
+                    }
+
+                    //region Redundant => clean code, create class!
                     // Select a random picture to load when pressing "Next question" then remove it from the list.
                     Random randImage = new Random();
                     int randIndex = randImage.nextInt(imageList.size());
@@ -270,7 +262,7 @@ public class GameActivity extends AppCompatActivity {
 
                     // Clear the whole temporary list.
                     tempList.clear();
-                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //endregion
                 }
                 else if (validateButton.getText().equals("Voir les résultats")) {
                     Intent intent = new Intent(GameActivity.this, ResultsActivity.class);

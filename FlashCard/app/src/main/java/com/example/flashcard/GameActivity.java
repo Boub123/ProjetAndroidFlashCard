@@ -17,7 +17,83 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 public class GameActivity extends AppCompatActivity {
+    //region Functions
+    protected int getRandomPicture(List<Integer> imageList, ImageView gameImageView){
+        Random randImage = new Random();
+        int randIndex = randImage.nextInt(imageList.size());
+        int gameImageId = imageList.get(randIndex);
+        gameImageView.setImageResource(gameImageId);
+        imageList.remove(randIndex);
+
+        return gameImageId;
+    }
+
+    protected String setGoodAnswer(int gameImageId){
+        String goodAnswer;
+        switch(gameImageId){
+            case R.drawable.csgo_logo:
+                goodAnswer = "Counter-Strike: Global Offensive";
+                break;
+            case R.drawable.ark_logo:
+                goodAnswer = "Ark";
+                break;
+            case R.drawable.league_of_legends_logo:
+                goodAnswer = "League of Legends";
+                break;
+            case R.drawable.overwatch_logo:
+                goodAnswer = "Overwatch";
+                break;
+            case R.drawable.payday_logo:
+                goodAnswer = "Payday";
+                break;
+            default:
+                goodAnswer = "None";
+        }
+        return goodAnswer;
+    }
+
+    protected void addMultipleChoices(int radioButtonsCount, List<String> answerList, List<String> choiceList, List<String> tempList, String goodAnswer){
+        for(int i = 0; i < radioButtonsCount-1; i++){
+            Random rand = new Random();
+            int n = rand.nextInt(answerList.size());
+
+            // Either if the random value equals to the correct answer or to the last element in the choices list, we remove it from the answers list in order to avoid duplications.
+            // Removed elements are added to a temporary list to add them back in the answers list later.
+            if (answerList.get(n).equals(choiceList.get(i)) || answerList.get(n).equals(goodAnswer)){
+                tempList.add(answerList.get(n));
+                answerList.remove(n);
+                n = rand.nextInt(answerList.size());
+                choiceList.add(answerList.get(n));
+            }
+            else{
+                choiceList.add(answerList.get(n));
+                tempList.add(answerList.get(n));
+                answerList.remove(n);
+            }
+        }
+    }
+
+    protected void setRandomRadioButtonsText(int radioButtonsCount, List<String> choiceList, RadioGroup answersRadioGroup){
+        for(int i = 0; i < radioButtonsCount; i++){
+            // Get a random integer within the range 0 to list.size - 1.
+            Random rand = new Random();
+            int n = rand.nextInt(choiceList.size());
+
+            // Get the ID of the current iterated RadioButton.
+            int radioButtonId = answersRadioGroup.getChildAt(i).getId();
+            RadioButton myRadioButton = findViewById(radioButtonId);
+
+            // Randomly picks an item from the list and set it as text to the current iterated RadioButton.
+            // Then removes this item from the list to avoid to set it twice as answer.
+            myRadioButton.setText(choiceList.get(n));
+            choiceList.remove(n);
+        }
+    }
+    //endregion
+
+    //region Global lists and variables
     List<Integer> imageList = new ArrayList<>();
     List<String> answerList = new ArrayList<>();
     List<String> choiceList = new ArrayList<>();
@@ -27,6 +103,7 @@ public class GameActivity extends AppCompatActivity {
     int gameImageId;
     int currentQuestion = 1;
     int correctAnswer = 0;
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +111,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //region Supplying items to lists.
+        //region Supplying items to lists
         imageList.add(R.drawable.csgo_logo);
         imageList.add(R.drawable.ark_logo);
         imageList.add(R.drawable.league_of_legends_logo);
@@ -57,83 +134,30 @@ public class GameActivity extends AppCompatActivity {
         final int maxQuestion = answerList.size();
         //endregion
 
+        //region New Game
         // Set title of the current activity with the current question number and the amount of remaining questions.
         setTitle("GameCard - " + currentQuestion + " / " + maxQuestion);
 
         // Select a random picture to load when launching a new game then remove it from the list.
-        Random randImage = new Random();
-        int randIndex = randImage.nextInt(imageList.size());
-        gameImageId = imageList.get(randIndex);
-        gameImageView.setImageResource(gameImageId);
-        imageList.remove(randIndex);
+        gameImageId = getRandomPicture(imageList, gameImageView);
 
-        // Set the correct answer variable according to the random selected picture.
-        switch(gameImageId){
-            case R.drawable.csgo_logo:
-                goodAnswer = "Counter-Strike: Global Offensive";
-                break;
-            case R.drawable.ark_logo:
-                goodAnswer = "Ark";
-                break;
-            case R.drawable.league_of_legends_logo:
-                goodAnswer = "League of Legends";
-                break;
-            case R.drawable.overwatch_logo:
-                goodAnswer = "Overwatch";
-                break;
-            case R.drawable.payday_logo:
-                goodAnswer = "Payday";
-                break;
-            default:
-                goodAnswer = "None";
-        }
+        // Set the correct answer according to the random selected picture and add it to the choice list.
+        goodAnswer = setGoodAnswer(gameImageId);
         choiceList.add(goodAnswer);
 
         // Choices list contains at least the good answer. Reducing the RadioButtons count by 1 allows to add more different choices according to the amount of existing RadioButtons.
-        for(int i = 0; i < radioButtonsCount-1; i++){
-            Random rand = new Random();
-            int n = rand.nextInt(answerList.size());
-
-            // Either if the random value equals to the correct answer or to the last element in the choices list, we remove it from the answers list in order to avoid duplications.
-            // Removed elements are added to a temporary list to add them back in the answers list later.
-            if (answerList.get(n).equals(choiceList.get(i)) || answerList.get(n).equals(goodAnswer)){
-                tempList.add(answerList.get(n));
-                answerList.remove(n);
-                n = rand.nextInt(answerList.size());
-                choiceList.add(answerList.get(n));
-            }
-            else{
-                choiceList.add(answerList.get(n));
-                tempList.add(answerList.get(n));
-                answerList.remove(n);
-            }
-        }
+        // The function does not add the same answer twice!
+        addMultipleChoices(radioButtonsCount, answerList, choiceList, tempList, goodAnswer);
 
         // Set RadioButtons text.
-        for(int i = 0; i < radioButtonsCount; i++){
-            // Get a random integer within the range 0 to list.size - 1.
-            Random rand = new Random();
-            int n = rand.nextInt(choiceList.size());
+        setRandomRadioButtonsText(radioButtonsCount, choiceList, answersRadioGroup);
 
-            // Get the ID of the current iterated RadioButton.
-            int radioButtonId = answersRadioGroup.getChildAt(i).getId();
-            RadioButton myRadioButton = findViewById(radioButtonId);
-
-            // Randomly picks an item from the list and set it as text to the current iterated RadioButton.
-            // Then removes this item from the list to avoid to set it twice as answer.
-            myRadioButton.setText(choiceList.get(n));
-            choiceList.remove(n);
-        }
-
-        // Elements that have been removed from the answers list are put back in it.
-        for (String value : tempList){
-            answerList.add(value);
-        }
-
-        // Then clear the whole temporary list.
+        // Elements that have been removed from the answers list are put back in it then clear the whole temporary list.
+        answerList.addAll(tempList);
         tempList.clear();
+        //endregion
 
-        // Action on validate button.
+        //region Submit answer
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,78 +213,13 @@ public class GameActivity extends AppCompatActivity {
                         answersRadioGroup.getChildAt(i).setEnabled(true);
                     }
 
-                    //region Redundant => clean code, create class!
-                    // Select a random picture to load when pressing "Next question" then remove it from the list.
-                    Random randImage = new Random();
-                    int randIndex = randImage.nextInt(imageList.size());
-                    gameImageId = imageList.get(randIndex);
-                    gameImageView.setImageResource(gameImageId);
-                    imageList.remove(randIndex);
-
-                    // Set the correct answer variable according to the random selected picture.
-                    switch(gameImageId){
-                        case R.drawable.csgo_logo:
-                            goodAnswer = "Counter-Strike: Global Offensive";
-                            break;
-                        case R.drawable.ark_logo:
-                            goodAnswer = "Ark";
-                            break;
-                        case R.drawable.league_of_legends_logo:
-                            goodAnswer = "League of Legends";
-                            break;
-                        case R.drawable.overwatch_logo:
-                            goodAnswer = "Overwatch";
-                            break;
-                        case R.drawable.payday_logo:
-                            goodAnswer = "Payday";
-                            break;
-                        default:
-                            goodAnswer = "None";
-                    }
+                    //region Next card
+                    gameImageId = getRandomPicture(imageList, gameImageView);
+                    goodAnswer = setGoodAnswer(gameImageId);
                     choiceList.add(goodAnswer);
-
-                    // Choices list contains at least the good answer. Reducing the RadioButtons count by 1 allows to add more different choices according to the amount of existing RadioButtons.
-                    for(int i = 0; i < radioButtonsCount-1; i++){
-                        Random rand = new Random();
-                        int n = rand.nextInt(answerList.size());
-
-                        // Either if the random value equals to the correct answer or to the last element in the choices list, we remove it from the answers list in order to avoid duplications.
-                        // Removed elements are added to a temporary list to add them back in the answers list later.
-                        if (answerList.get(n).equals(choiceList.get(i)) || answerList.get(n).equals(goodAnswer)){
-                            tempList.add(answerList.get(n));
-                            answerList.remove(n);
-                            n = rand.nextInt(answerList.size());
-                            choiceList.add(answerList.get(n));
-                        }
-                        else{
-                            choiceList.add(answerList.get(n));
-                            tempList.add(answerList.get(n));
-                            answerList.remove(n);
-                        }
-                    }
-
-                    // Set RadioButtons text.
-                    for(int i = 0; i < radioButtonsCount; i++){
-                        // Get a random integer within the range 0 to list.size - 1.
-                        Random rand = new Random();
-                        int n = rand.nextInt(choiceList.size());
-
-                        // Get the ID of the current iterated RadioButton.
-                        int radioButtonId = answersRadioGroup.getChildAt(i).getId();
-                        RadioButton myRadioButton = findViewById(radioButtonId);
-
-                        // Randomly picks an item from the list and set it as text to the current iterated RadioButton.
-                        // Then removes this item from the list to avoid to set it twice as answer.
-                        myRadioButton.setText(choiceList.get(n));
-                        choiceList.remove(n);
-                    }
-
-                    // Elements that have been removed from the answers list are put back in it.
-                    for (String value : tempList){
-                        answerList.add(value);
-                    }
-
-                    // Clear the whole temporary list.
+                    addMultipleChoices(radioButtonsCount, answerList, choiceList, tempList, goodAnswer);
+                    setRandomRadioButtonsText(radioButtonsCount, choiceList, answersRadioGroup);
+                    answerList.addAll(tempList);
                     tempList.clear();
                     //endregion
                 }
@@ -272,7 +231,9 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         });
+        //endregion
 
+        //region Show full-sized picture
         gameImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,5 +243,6 @@ public class GameActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //endregion
     }
 }

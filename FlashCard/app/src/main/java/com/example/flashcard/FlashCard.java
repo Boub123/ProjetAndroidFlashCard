@@ -9,16 +9,20 @@ import java.util.List;
 
 public class FlashCard implements Parcelable{
 
-    @DrawableRes int flagId;
-    String oneReponse ;
-    List<String> reponse;
+    @DrawableRes final int flagId;
+    final String oneReponse ;
+    final List<String> reponse;
 
-//cmd n
+
+    //cmd n
+
+
     public FlashCard(int flagId, String oneReponse, List<String> reponse) {
         this.flagId = flagId;
         this.oneReponse = oneReponse;
         this.reponse = reponse;
     }
+
 
     protected FlashCard(Parcel in) {
         flagId = in.readInt();

@@ -16,13 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.163"
-        app:srcCompat="@drawable/csgo_logo" />
+        app:srcCompat="@drawable/guess_game_logo" />
 
     <Button
         android:id="@+id/mainbuttonApprendre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Deviner le jeu"
+        android:text="Jouer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/mainImageView"
         app:layout_constraintStart_toStartOf="@+id/mainImageView"
@@ -40,5 +40,15 @@
         app:layout_constraintStart_toStartOf="@+id/mainImageView"
         app:layout_constraintTop_toBottomOf="@+id/mainbuttonApprendre"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/ListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="Voir les questions"
+        app:layout_constraintBottom_toTopOf="@+id/mainbuttonApprendre"
+        app:layout_constraintEnd_toEndOf="@+id/mainImageView"
+        app:layout_constraintStart_toStartOf="@+id/mainImageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

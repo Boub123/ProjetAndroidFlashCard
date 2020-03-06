@@ -113,6 +113,7 @@ public class GameActivity extends AppCompatActivity {
     List<String> answerList = new ArrayList<>();
     List<String> choiceList = new ArrayList<>();
     List<String> tempList = new ArrayList<>();
+    List<CardClass> cards = CardClass.createCardGameList();
 
     String goodAnswer;
     int gameImageId;
@@ -127,27 +128,12 @@ public class GameActivity extends AppCompatActivity {
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //region Supplying items to lists
-        imageList.add(R.drawable.csgo_logo);
-        imageList.add(R.drawable.ark_logo);
-        imageList.add(R.drawable.league_of_legends_logo);
-        imageList.add(R.drawable.overwatch_logo);
-        imageList.add(R.drawable.payday_logo);
-        imageList.add(R.drawable.final_fantasy_logo);
-        imageList.add(R.drawable.naruto_logo);
-        imageList.add(R.drawable.r_six_logo);
-        imageList.add(R.drawable.rocket_league_logo);
-        imageList.add(R.drawable.zelda_logo);
-
-        answerList.add("Counter-Strike: Global Offensive");
-        answerList.add("Ark");
-        answerList.add("League of Legends");
-        answerList.add("Overwatch");
-        answerList.add("Payday");
-        answerList.add("Final Fantasy");
-        answerList.add("Naruto");
-        answerList.add("Rainbow Six Siege");
-        answerList.add("Rocket League");
-        answerList.add("Zelda");
+        for (CardClass card : cards){
+            imageList.add(card.getImageId());
+        }
+        for (CardClass card : cards){
+            answerList.add(card.getAnswer());
+        }
         //endregion
 
         //region Setting up variables
@@ -158,11 +144,6 @@ public class GameActivity extends AppCompatActivity {
         final int radioButtonsCount = answersRadioGroup.getChildCount(); // getChildCount get the number of RadioButtons within the RadioGroup.
         final int maxQuestion = answerList.size();
         //endregion
-
-        /*CardClass test = new CardClass(R.drawable.csgo_logo, "CS:GO");
-        Log.i("LOG_CAT", test.getGameName() + " " + test.getDrawableId());
-        int random = 0;
-        CardClass testBis = new CardClass(imageList.get(random), "nom du jeu");*/
 
         //region New Game
         // Set title of the current activity with the current question number and the amount of remaining questions.

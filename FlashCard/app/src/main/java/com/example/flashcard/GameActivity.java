@@ -48,6 +48,21 @@ public class GameActivity extends AppCompatActivity {
             case R.drawable.payday_logo:
                 goodAnswer = "Payday";
                 break;
+            case R.drawable.final_fantasy_logo:
+                goodAnswer = "Final Fantasy";
+                break;
+            case R.drawable.naruto_logo:
+                goodAnswer = "Naruto";
+                break;
+            case R.drawable.r_six_logo:
+                goodAnswer = "Rainbow Six Siege";
+                break;
+            case R.drawable.rocket_league_logo:
+                goodAnswer = "Rocket League";
+                break;
+            case R.drawable.zelda_logo:
+                goodAnswer = "Zelda";
+                break;
             default:
                 goodAnswer = "None";
         }
@@ -117,12 +132,22 @@ public class GameActivity extends AppCompatActivity {
         imageList.add(R.drawable.league_of_legends_logo);
         imageList.add(R.drawable.overwatch_logo);
         imageList.add(R.drawable.payday_logo);
+        imageList.add(R.drawable.final_fantasy_logo);
+        imageList.add(R.drawable.naruto_logo);
+        imageList.add(R.drawable.r_six_logo);
+        imageList.add(R.drawable.rocket_league_logo);
+        imageList.add(R.drawable.zelda_logo);
 
         answerList.add("Counter-Strike: Global Offensive");
         answerList.add("Ark");
         answerList.add("League of Legends");
         answerList.add("Overwatch");
         answerList.add("Payday");
+        answerList.add("Final Fantasy");
+        answerList.add("Naruto");
+        answerList.add("Rainbow Six Siege");
+        answerList.add("Rocket League");
+        answerList.add("Zelda");
         //endregion
 
         //region Setting up variables

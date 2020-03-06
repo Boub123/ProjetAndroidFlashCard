@@ -134,6 +134,11 @@ public class GameActivity extends AppCompatActivity {
         final int maxQuestion = answerList.size();
         //endregion
 
+        /*CardClass test = new CardClass(R.drawable.csgo_logo, "CS:GO");
+        Log.i("LOG_CAT", test.getGameName() + " " + test.getDrawableId());
+        int random = 0;
+        CardClass testBis = new CardClass(imageList.get(random), "nom du jeu");*/
+
         //region New Game
         // Set title of the current activity with the current question number and the amount of remaining questions.
         setTitle("GameCard - " + currentQuestion + " / " + maxQuestion);
